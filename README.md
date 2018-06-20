@@ -1,4 +1,6 @@
+[![Build Status](https://travis-ci.org/rchain/secp256k1-native.svg?branch=master)](https://travis-ci.org/rchain/secp256k1-native)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 # Secp256k1  Native Libraries
 This repository creates standard builds of the secp256k1 native library. It packages the built libraries into operating system-specific JARs (with POMs). This allows secp256k1-java (or other interested Java projects) to depend on these JARs using the normal Maven dependency resolution process.
 

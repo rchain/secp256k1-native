@@ -20,7 +20,8 @@ possible to execute the Linux or OS X component of the build locally.
 Once the platform dependencies are met:
 
 ```bash
-git submodule update --init
+git clone --recursive https://github.com/rchain/secp256k1-native.git
+cd secp256k1-native
 ./scripts/build_secp256k1.sh
 mvn clean install
 ```

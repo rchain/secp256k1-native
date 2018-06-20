@@ -75,7 +75,7 @@
             <configuration>
               <fileSets>
                 <fileSet>
-                  <sourceFile>${project.basedir}/../secp256k1/.libs/libsecp256k1.so</sourceFile>
+                  <sourceFile>${project.basedir}/../secp256k1/.libs/libsecp256k1.dylib</sourceFile>
                   <destinationFile>${project.basedir}/target/native/coop/rchain/${project.artifactId}.dylib</destinationFile>
                 </fileSet>
               </fileSets>

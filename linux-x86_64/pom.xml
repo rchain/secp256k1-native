@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>rchain</groupId>
+    <groupId>coop.rchain</groupId>
     <artifactId>secp256k1-native-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
@@ -70,7 +70,7 @@
               <fileSets>
                 <fileSet>
                   <sourceFile>${project.basedir}/../secp256k1/.libs/libsecp256k1.so</sourceFile>
-                  <destinationFile>${project.basedir}/target/native/org/bitcoin/${project.artifactId}.so</destinationFile>
+                  <destinationFile>${project.basedir}/target/native/coop/rchain/${project.artifactId}.so</destinationFile>
                 </fileSet>
               </fileSets>
             </configuration>

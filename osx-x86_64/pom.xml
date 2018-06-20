@@ -35,6 +35,9 @@
           <execution>
             <id>autogen</id>
             <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
             <configuration>
               <workingDirectory>${project.basedir}/../secp256k1/</workingDirectory>
               <executable>./autogen.sh</executable>
@@ -43,6 +46,9 @@
           <execution>
             <id>configure</id>
             <phase>process-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
             <configuration>
               <workingDirectory>${project.basedir}/../secp256k1/</workingDirectory>
               <executable>./configure</executable>

@@ -12,16 +12,6 @@ matrix:
     language: java
     osx_image: xcode9.2
 before_install:
-  - gpg --version
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install autotools-dev; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install autoconf; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install build-essential; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home); fi
-  - ./scripts/build_secp256k1.sh
-install:
-  - mvn -B -Pdeploy -DexcludeGroupIds=com.github.github -V dependency:go-offline
 script:
-  - mvn -B -Pdeploy -Dgpg.skip=true verify
-after_success:
-#  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" == "" ]; then echo $GPG_KEY | base64 --decode | gpg --batch --fast-import -; fi
-#  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" == "" ]; then mvn -B -P deploy --settings .travis-settings.xml deploy; fi
+  - mvn -B package

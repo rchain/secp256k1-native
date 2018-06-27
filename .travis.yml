@@ -13,5 +13,7 @@ matrix:
     osx_image: xcode9.2
 before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home); fi
+install:
+  - mvn -B -V install -DskipTests=true -Dgpg.skip=true -Dmaven.javadoc.skip=true
 script:
-  - mvn -B package
+  - mvn -B package -Dgpg.skip=true

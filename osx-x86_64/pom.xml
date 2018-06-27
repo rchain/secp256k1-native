@@ -13,14 +13,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <!-- OSX profile disabled deployment (to skip native-parent deploy) -->
-        <configuration>
-          <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
       </plugin>

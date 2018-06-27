@@ -14,4 +14,4 @@ matrix:
 before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home); fi
 script:
-  - mvn -B package
+  - mvn -B package -Dgpg.skip

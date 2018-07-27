@@ -142,7 +142,6 @@
             <includes>
               <include>**/*.so</include>
               <include>**/*.dylib</include>
-              <include>**/*.dll</include>
             </includes>
           </configuration>
         </plugin>
@@ -159,7 +158,6 @@
       <id>release-tag</id>
       <modules>
         <module>linux-x86_64</module>
-        <module>windows-x86_64</module>
         <module>osx-x86_64</module>
       </modules>
     </profile>
@@ -173,7 +171,6 @@
       </activation>
       <modules>
         <module>linux-x86_64</module>
-        <module>windows-x86_64</module>
       </modules>
     </profile>
     <profile>

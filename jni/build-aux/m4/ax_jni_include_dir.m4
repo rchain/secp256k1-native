@@ -101,7 +101,13 @@ AC_CACHE_CHECK(jni headers, ac_cv_jni_header_path,
       ac_cv_jni_header_path="$_JTOPDIR/include"
       JNI_INCLUDE_DIRS="$JNI_INCLUDE_DIRS $ac_cv_jni_header_path"
     else
-      ac_cv_jni_header_path=none
+      if test -f "/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/include/jni.h"; then
+        ac_cv_jni_header_path="/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/include \
+         /Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/include/darwin"
+        JNI_INCLUDE_DIRS="$JNI_INCLUDE_DIRS $ac_cv_jni_header_path"
+      else
+        ac_cv_jni_header_path=none
+      fi
     fi
   fi
 ])

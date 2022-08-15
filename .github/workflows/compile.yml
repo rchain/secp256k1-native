@@ -1,18 +1,98 @@
-name: Compile secp256k1 native code
+name: Compile secp256k1 native library
 
 on:
-  push:
+  pull_request:
     branches:
     - master
+  push:
+    branches:
+    - trying
+    - staging
 
 jobs:
   compile:
-    name: Compile secp256k1 native code
+    name: Compile secp256k1
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-11]
+        include:
+        # Linux
+        - name: linux
+          os: ubuntu-22.04
+          arch: amd64
+        - name: linux
+          os: ubuntu-22.04
+          arch: aarch64
+        # MacOS
+        - name: macos
+          os: macos-11
+          arch: amd64
+        - name: macos
+          os: macos-11
+          arch: aarch64
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
 
-  # TODO: add release job
+    - name: Install dependencies ubuntu
+      if: matrix.name == 'linux'
+      run: |
+        uname -a
+        sudo apt-get update
+        sudo apt-get install -y build-essential libtool
+        sudo apt-get install -y gcc-aarch64-linux-gnu
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get install -y openjdk-17-jdk-headless
+
+    - name: Install dependencies macos
+      if: matrix.name == 'macos'
+      run: |
+        uname -a
+        brew install automake libtool
+        brew install openjdk@17
+        sudo ln -sfn /usr/local/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+        echo 'export PATH="/usr/local/opt/openjdk@17/bin:$PATH"' >> /Users/runner/.bash_profile
+        export CPPFLAGS="-I/usr/local/opt/openjdk@17/include"
+
+        brew tap messense/macos-cross-toolchains
+        # install aarch64-unknown-linux-gnu toolchain
+        brew install aarch64-unknown-linux-gnu
+
+        # brew install aarch64-elf-gcc
+
+        # brew tap osx-cross/arm
+        # brew install arm-gcc-bin
+
+    - name: Build native code
+      if: matrix.arch == 'amd64'
+      run: |
+        ./compile.sh
+
+    - name: Build native code - Linux aarch64
+      if: matrix.name == 'linux' && matrix.arch == 'aarch64'
+      run: |
+        ./compile.sh aarch64-linux-gnu
+
+    - name: Build native code - MacOS aarch64
+      if: matrix.name == 'macos' && matrix.arch == 'aarch64'
+      run: |
+        ./compile.sh aarch64-unknown-linux-gnu
+
+    - name: Export artifacts linux
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.name }}-${{ matrix.arch }}
+        path: ./secp256k1-tmp/.libs/
+
+  # Job to notify bors when run is successful. Skipped and cancelled job is considered
+  # as failure. More info https://github.com/bors-ng/bors-ng/issues/1115.
+  bors_success:
+    name: bors build finished
+    if: ${{ success() }}
+    needs:
+    - compile
+    runs-on: ubuntu-latest
+    steps:
+    - run: exit 0

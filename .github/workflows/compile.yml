@@ -50,20 +50,10 @@ jobs:
       if: matrix.name == 'macos'
       run: |
         uname -a
-        brew install automake libtool
+        brew install autoconf automake
         brew install openjdk@17
-        sudo ln -sfn /usr/local/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
-        echo 'export PATH="/usr/local/opt/openjdk@17/bin:$PATH"' >> /Users/runner/.bash_profile
-        export CPPFLAGS="-I/usr/local/opt/openjdk@17/include"
-
-        brew tap messense/macos-cross-toolchains
-        # install aarch64-unknown-linux-gnu toolchain
-        brew install aarch64-unknown-linux-gnu
-
-        # brew install aarch64-elf-gcc
-
-        # brew tap osx-cross/arm
-        # brew install arm-gcc-bin
+        echo 'export JAVA_PATH="/usr/local/opt/openjdk@17/libexec/openjdk.jdk:$PATH"' >> /Users/runner/.bash_profile
+        export CFLAGS="-I$JAVA_PATH/include -I$JAVA_PATH/include/darwin"
 
     - name: Build native code
       if: matrix.arch == 'amd64'
@@ -73,12 +63,12 @@ jobs:
     - name: Build native code - Linux aarch64
       if: matrix.name == 'linux' && matrix.arch == 'aarch64'
       run: |
-        ./compile.sh aarch64-linux-gnu
+        ./compile.sh 
 
     - name: Build native code - MacOS aarch64
       if: matrix.name == 'macos' && matrix.arch == 'aarch64'
       run: |
-        ./compile.sh aarch64-unknown-linux-gnu
+        ./compile.sh 
 
     - name: Export artifacts linux
       uses: actions/upload-artifact@v3

@@ -92,22 +92,26 @@ _AS_ECHO_LOG([_JINC=$_JINC])
 # -> ../../CurrentJDK/Headers/jni.h.
 AC_CACHE_CHECK(jni headers, ac_cv_jni_header_path,
 [
-  if test -f "$_JINC/jni.h"; then
+  if test -f "$JAVA_HOME/include/jni.h"; then
+    ac_cv_jni_header_path="$JAVA_HOME/include \
+      $JAVA_HOME/include/darwin"
+    JNI_INCLUDE_DIRS="$JNI_INCLUDE_DIRS $ac_cv_jni_header_path"
+  elif test -f "$_JINC/jni.h"; then
+    echo _JINC/jni.h: "$_JINC/jni.h"
+
     ac_cv_jni_header_path="$_JINC"
     JNI_INCLUDE_DIRS="$JNI_INCLUDE_DIRS $ac_cv_jni_header_path"
   else
     _JTOPDIR=`echo "$_JTOPDIR" | sed -e 's:/[[^/]]*$::'`
     if test -f "$_JTOPDIR/include/jni.h"; then
+      echo _JTOPDIR/include/jni.h: "$_JTOPDIR/include/jni.h"
+
       ac_cv_jni_header_path="$_JTOPDIR/include"
       JNI_INCLUDE_DIRS="$JNI_INCLUDE_DIRS $ac_cv_jni_header_path"
+
+      echo JNI_INCLUDE_DIRS: "$JNI_INCLUDE_DIRS"
     else
-      if test -f "/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/include/jni.h"; then
-        ac_cv_jni_header_path="/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/include \
-         /Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/include/darwin"
-        JNI_INCLUDE_DIRS="$JNI_INCLUDE_DIRS $ac_cv_jni_header_path"
-      else
-        ac_cv_jni_header_path=none
-      fi
+      ac_cv_jni_header_path=none
     fi
   fi
 ])
